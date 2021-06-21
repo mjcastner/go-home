@@ -1,0 +1,15 @@
+# Reference: https://cloud.google.com/service-infrastructure/docs/service-management/reference/rpc/google.api#index
+type: google.api.Service
+config_version: 3
+name: gohome-envoy-proxy-b5p44absla-uw.a.run.app
+title: GoHome gRPC API
+apis:
+  - name: server.GoHome
+usage:
+  rules:
+  - selector: server.GoHome.*
+    allow_unregistered_calls: true
+backend:
+  rules:
+    - selector: "*"
+      address: grpcs://gohome-server-b5p44absla-uw.a.run.app
