@@ -1,0 +1,9 @@
+syntax = "proto3";
+option go_package = "github.com/mjcastner/go-home/protos/link_proto";
+
+// TODO(mjcastner) Add logic for owners, collections of links per key, created, updated, etc.
+message Link {
+  string name = 1;
+  string target_url = 2;
+  int64 views = 3;
+}

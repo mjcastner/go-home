@@ -1,0 +1,7 @@
+bazel-bin
+bazel-go-home
+bazel-out
+bazel-testlogs
+frontend/ios
+frontend/android
+frontend/web

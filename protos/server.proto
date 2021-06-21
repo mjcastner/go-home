@@ -1,0 +1,23 @@
+syntax = "proto3";
+package server;
+option go_package = "github.com/mjcastner/go-home/protos/server_proto";
+
+import "protos/link.proto";
+
+message LinkRequest {
+  string name = 1;
+}
+
+message SetResponse {
+  enum ResponseCode {
+    SUCCESS = 0;
+    FAILED = 1;
+  }
+
+  ResponseCode code = 1;
+}
+
+service GoHome {
+  rpc Get (LinkRequest) returns (Link) {}
+  rpc Set (Link) returns (SetResponse) {}
+}
