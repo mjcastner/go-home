@@ -4,8 +4,16 @@ option go_package = "github.com/mjcastner/go-home/protos/server_proto";
 
 import "protos/link.proto";
 
+message LinkBatch {
+  repeated Link links = 1;
+}
+
 message LinkRequest {
   string name = 1;
+}
+
+message LinkRequestBatch {
+  repeated LinkRequest names = 1;
 }
 
 message SetResponse {
@@ -18,6 +26,8 @@ message SetResponse {
 }
 
 service GoHome {
+  rpc BatchGet (LinkRequestBatch) returns (LinkBatch) {}
+  rpc BatchSet (LinkBatch) returns (SetResponse) {}
   rpc Get (LinkRequest) returns (Link) {}
   rpc Set (Link) returns (SetResponse) {}
 }

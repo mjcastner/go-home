@@ -7,7 +7,7 @@ import 'package:go_home/protos/server.pbgrpc.dart';
 GoHomeClient goHomeStub = initGoHomeClient();
 
 class HomePage extends StatelessWidget {
-  final link = goHomeStub.get(LinkRequest(name: "trololo"));
+  final links = goHomeStub.get(LinkRequest(name: "trololo"));
 
   Widget buildHomeView(List<dynamic> links) {
     List<DataRow> homeViewRows = [];
@@ -68,16 +68,10 @@ class HomePage extends StatelessWidget {
               ],
             );
           } else {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(),
-              ],
-            );
+            return CircularProgressIndicator();
           }
         },
-        future: link,
+        future: links,
       ),
     );
   }

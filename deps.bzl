@@ -87,6 +87,13 @@ def go_dependencies():
         version = "v1.1.2",
     )
     go_repository(
+        name = "com_github_jackc_pgx",
+        importpath = "github.com/jackc/pgx",
+        sum = "h1:2zP5OD7kiyR3xzRYMhOcXVvkDZsImVXfj+yIyTQf3/o=",
+        version = "v3.6.2+incompatible",
+    )
+
+    go_repository(
         name = "com_github_kballard_go_shellquote",
         importpath = "github.com/kballard/go-shellquote",
         sum = "h1:Z9n2FFNUXsshfwJMBgNA0RU6/i7WVaAegv3PtuIHPMs=",
@@ -104,6 +111,12 @@ def go_dependencies():
         importpath = "github.com/mattn/go-sqlite3",
         sum = "h1:fxWBnXkxfM6sRiuH3bqJ4CfzZojMOLVc0UTsTglEghA=",
         version = "v1.14.7",
+    )
+    go_repository(
+        name = "com_github_pkg_errors",
+        importpath = "github.com/pkg/errors",
+        sum = "h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=",
+        version = "v0.9.1",
     )
 
     go_repository(

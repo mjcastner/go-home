@@ -5,7 +5,6 @@ import (
 	"crypto/tls"
 	"flag"
 	"log"
-	"reflect"
 
 	link_proto "github.com/mjcastner/go-home/protos/link_proto_go"
 	server_proto "github.com/mjcastner/go-home/protos/server_proto_go"
@@ -41,27 +40,41 @@ func main() {
 
 	c := server_proto.NewGoHomeClient(conn)
 
-	// Test Set
-	link := &link_proto.Link{
-		Name:      "trololo",
-		TargetUrl: `https://www.youtube.com/watch?v=sTSA_sWGM44`,
-		Views:     500000000,
+	// Assemble example links
+	names := []string{"trololo", "blackspine", "bananaphone"}
+	urls := []string{"https://www.youtube.com/watch?v=sTSA_sWGM44", "https://www.youtube.com/watch?v=_igaLv7ro8o", "https://www.youtube.com/watch?v=UqWwsUhrFBw"}
+	views := []int64{500, 250, 1}
+	links := make([]link_proto.Link, 3)
+	for i := range links {
+		links[i].Name = names[i]
+		links[i].TargetUrl = urls[i]
+		links[i].Views = views[i]
 	}
-	test2, err := c.Set(ctx, link)
-	if err != nil {
-		log.Fatalf("Get failed:", err)
-	}
-	log.Println(reflect.TypeOf(test2))
-	log.Println(test2)
 
-	// Test Get
-	linkRequest := &server_proto.LinkRequest{
-		Name: "trololo",
+	// Set
+	for i := range links {
+		_, err := c.Set(ctx, &links[i])
+		if err != nil {
+			log.Fatalf("Set failed:", err)
+		} else {
+			log.Printf("Successfully set key '%s' with value '%s'", links[i].Name, links[i].TargetUrl)
+		}
 	}
-	test, err := c.Get(ctx, linkRequest)
-	if err != nil {
-		log.Fatalf("Get failed:", err)
+
+	// Batch set
+
+	// Get
+	for i := range names {
+		linkRequest := &server_proto.LinkRequest{
+			Name: names[i],
+		}
+		link, err := c.Get(ctx, linkRequest)
+		if err != nil {
+			log.Fatalf("Get failed:", err)
+		} else {
+			log.Printf("Successfully retrieved key '%s' with value '%s'", link.Name, link.TargetUrl)
+		}
 	}
-	log.Println(reflect.TypeOf(test))
-	log.Println(test)
+
+	// Batch get
 }
