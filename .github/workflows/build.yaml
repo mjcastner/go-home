@@ -4,7 +4,7 @@ on:
     branches:
       - main
 jobs:
-  Build gRPC server:
+  build_grpc_server:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
