@@ -9,9 +9,52 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'link.pb.dart' as $1;
+
 import 'server.pbenum.dart';
 
 export 'server.pbenum.dart';
+
+class LinkBatch extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LinkBatch', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'server'), createEmptyInstance: create)
+    ..pc<$1.Link>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'links', $pb.PbFieldType.PM, subBuilder: $1.Link.create)
+    ..hasRequiredFields = false
+  ;
+
+  LinkBatch._() : super();
+  factory LinkBatch({
+    $core.Iterable<$1.Link>? links,
+  }) {
+    final _result = create();
+    if (links != null) {
+      _result.links.addAll(links);
+    }
+    return _result;
+  }
+  factory LinkBatch.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LinkBatch.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  LinkBatch clone() => LinkBatch()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  LinkBatch copyWith(void Function(LinkBatch) updates) => super.copyWith((message) => updates(message as LinkBatch)) as LinkBatch; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LinkBatch create() => LinkBatch._();
+  LinkBatch createEmptyInstance() => create();
+  static $pb.PbList<LinkBatch> createRepeated() => $pb.PbList<LinkBatch>();
+  @$core.pragma('dart2js:noInline')
+  static LinkBatch getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LinkBatch>(create);
+  static LinkBatch? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<$1.Link> get links => $_getList(0);
+}
 
 class LinkRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LinkRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'server'), createEmptyInstance: create)
@@ -58,6 +101,47 @@ class LinkRequest extends $pb.GeneratedMessage {
   $core.bool hasName() => $_has(0);
   @$pb.TagNumber(1)
   void clearName() => clearField(1);
+}
+
+class LinkRequestBatch extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LinkRequestBatch', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'server'), createEmptyInstance: create)
+    ..pPS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'names')
+    ..hasRequiredFields = false
+  ;
+
+  LinkRequestBatch._() : super();
+  factory LinkRequestBatch({
+    $core.Iterable<$core.String>? names,
+  }) {
+    final _result = create();
+    if (names != null) {
+      _result.names.addAll(names);
+    }
+    return _result;
+  }
+  factory LinkRequestBatch.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LinkRequestBatch.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  LinkRequestBatch clone() => LinkRequestBatch()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  LinkRequestBatch copyWith(void Function(LinkRequestBatch) updates) => super.copyWith((message) => updates(message as LinkRequestBatch)) as LinkRequestBatch; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LinkRequestBatch create() => LinkRequestBatch._();
+  LinkRequestBatch createEmptyInstance() => create();
+  static $pb.PbList<LinkRequestBatch> createRepeated() => $pb.PbList<LinkRequestBatch>();
+  @$core.pragma('dart2js:noInline')
+  static LinkRequestBatch getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LinkRequestBatch>(create);
+  static LinkRequestBatch? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<$core.String> get names => $_getList(0);
 }
 
 class SetResponse extends $pb.GeneratedMessage {

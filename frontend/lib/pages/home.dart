@@ -7,7 +7,11 @@ import 'package:go_home/protos/server.pbgrpc.dart';
 GoHomeClient goHomeStub = initGoHomeClient();
 
 class HomePage extends StatelessWidget {
-  final links = goHomeStub.get(LinkRequest(name: "trololo"));
+  final linkRequest = goHomeStub.batchGet(
+    LinkRequestBatch(
+      names: ["trololo", "blackspine", "bananaphone"],
+    ),
+  );
 
   Widget buildHomeView(List<dynamic> links) {
     List<DataRow> homeViewRows = [];
@@ -48,15 +52,12 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(),
       floatingActionButton: GoHomeFab(),
       body: FutureBuilder(
-        builder: (BuildContext context, AsyncSnapshot<Link> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<LinkBatch> snapshot) {
           if (snapshot.hasData) {
             dynamic linkData = snapshot.data;
-            List<dynamic> links = [];
-            links.add(linkData);
-
             return Container(
               padding: EdgeInsets.all(20),
-              child: buildHomeView(links),
+              child: buildHomeView(linkData.links),
             );
           } else if (snapshot.hasError) {
             print(snapshot.error);
@@ -71,7 +72,7 @@ class HomePage extends StatelessWidget {
             return CircularProgressIndicator();
           }
         },
-        future: links,
+        future: linkRequest,
       ),
     );
   }

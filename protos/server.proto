@@ -13,7 +13,7 @@ message LinkRequest {
 }
 
 message LinkRequestBatch {
-  repeated LinkRequest names = 1;
+  repeated string names = 1;
 }
 
 message SetResponse {

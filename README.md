@@ -17,9 +17,18 @@ bazel run //grpc/server:main;
 bazel run //grpc/clients/debug:main;
 ```
 
-## (Optional) Build server Docker container
+## Build server Docker container
 ```
-blaze run --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //grpc/server:image_push;
+bazel run --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //grpc/server:image_push;
+```
+
+## Deploy new server version
+```
+gcloud run deploy gohome-server \
+--image="gcr.io/gohome-315922/gohome_server:latest" \
+--allow-unauthenticated \
+--platform managed \
+--project=gohome-315922
 ```
 
 ## Build and deploy the gRPC ESPv2 Endpoint

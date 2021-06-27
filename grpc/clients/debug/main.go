@@ -77,4 +77,15 @@ func main() {
 	}
 
 	// Batch get
+	batchGetRequest := &server_proto.LinkRequestBatch{}
+	for i := range names {
+		batchGetRequest.Names = append(batchGetRequest.Names, names[i])
+	}
+	batch, err := c.BatchGet(ctx, batchGetRequest)
+	if err != nil {
+		log.Fatalf("Batch get failed:", err)
+	} else {
+		log.Println("Successfully retrieved link batch!")
+	}
+	log.Println(batch)
 }

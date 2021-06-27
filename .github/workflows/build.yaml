@@ -1,0 +1,12 @@
+name: GitHub Actions Demo
+on:
+  push:
+    branches:
+      - main
+jobs:
+  Build gRPC server:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bazelbuild/setup-bazelisk@v1
+      - run: bazel build //grpc/server:main

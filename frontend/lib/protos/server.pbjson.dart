@@ -8,6 +8,16 @@
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
 import 'dart:typed_data' as $typed_data;
+@$core.Deprecated('Use linkBatchDescriptor instead')
+const LinkBatch$json = const {
+  '1': 'LinkBatch',
+  '2': const [
+    const {'1': 'links', '3': 1, '4': 3, '5': 11, '6': '.Link', '10': 'links'},
+  ],
+};
+
+/// Descriptor for `LinkBatch`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List linkBatchDescriptor = $convert.base64Decode('CglMaW5rQmF0Y2gSGwoFbGlua3MYASADKAsyBS5MaW5rUgVsaW5rcw==');
 @$core.Deprecated('Use linkRequestDescriptor instead')
 const LinkRequest$json = const {
   '1': 'LinkRequest',
@@ -18,6 +28,16 @@ const LinkRequest$json = const {
 
 /// Descriptor for `LinkRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List linkRequestDescriptor = $convert.base64Decode('CgtMaW5rUmVxdWVzdBISCgRuYW1lGAEgASgJUgRuYW1l');
+@$core.Deprecated('Use linkRequestBatchDescriptor instead')
+const LinkRequestBatch$json = const {
+  '1': 'LinkRequestBatch',
+  '2': const [
+    const {'1': 'names', '3': 1, '4': 3, '5': 9, '10': 'names'},
+  ],
+};
+
+/// Descriptor for `LinkRequestBatch`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List linkRequestBatchDescriptor = $convert.base64Decode('ChBMaW5rUmVxdWVzdEJhdGNoEhQKBW5hbWVzGAEgAygJUgVuYW1lcw==');
 @$core.Deprecated('Use setResponseDescriptor instead')
 const SetResponse$json = const {
   '1': 'SetResponse',

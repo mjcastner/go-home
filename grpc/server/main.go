@@ -23,6 +23,33 @@ type server struct {
 	server_proto.UnimplementedGoHomeServer
 }
 
+func (s *server) BatchGet(ctx context.Context, in *server_proto.LinkRequestBatch) (*server_proto.LinkBatch, error) {
+	log.Printf("Received Batch Get request: %s", in)
+	var (
+		name       string
+		target_url string
+		views      int64
+	)
+
+	links := &server_proto.LinkBatch{}
+	rows, err := DB.Query("SELECT name, target_url, views FROM links LIMIT 500;")
+	if err != nil {
+		log.Println(err)
+	}
+
+	for rows.Next() {
+		rows.Scan(&name, &target_url, &views)
+		link := &link_proto.Link{
+			Name:      name,
+			TargetUrl: target_url,
+			Views:     views,
+		}
+		links.Links = append(links.Links, link)
+	}
+
+	return links, nil
+}
+
 func (s *server) Get(ctx context.Context, in *server_proto.LinkRequest) (*link_proto.Link, error) {
 	var (
 		name       string
@@ -81,7 +108,7 @@ func initDb(ctx context.Context, dbName string) bool {
 			return true
 		} else {
 			log.Printf("%s: %s", err, initDbSmt)
-			return false 
+			return false
 		}
 	}
 
