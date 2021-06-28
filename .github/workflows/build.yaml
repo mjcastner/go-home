@@ -42,4 +42,5 @@ jobs:
         run: protoc --include_imports --include_source_info --proto_path=. --descriptor_set_out=protos/server_descriptor.pb protos/server.proto
       - name: Deploy gRPC endpoint configuration
         run: gcloud endpoints services deploy protos/server_descriptor.pb espv2/gohome_endpoint.yaml
-      - run: ls && pwd && tree
+      - run: export ENDPOINT_CONFIG_ID=`gcloud endpoints configs list --service ${{ secrets.ENVOY_ENDPOINT_URL }} --limit 1 | egrep -v CONFIG_ID | cut -f1 -d " "`
+      - run: echo $ENDPOINT_CONFIG_ID
