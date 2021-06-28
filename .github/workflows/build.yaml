@@ -77,4 +77,5 @@ jobs:
         working-directory: ./frontend
       - name: Push Flutter web Docker image to GCR
         run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/gohome_flutter_web:latest
-        working-directory: ./frontend
+      - name: Deploy Flutter web app to Cloud Run
+        run: gcloud run deploy gohome-flutter-web --image="gcr.io/${{ secrets.GCP_PROJECT_ID }}/gohome_flutter_web:latest" --allow-unauthenticated --platform managed --region ${{ secrets.GCP_REGION }}
