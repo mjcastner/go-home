@@ -73,7 +73,7 @@ jobs:
         run: flutter build web --pwa-strategy=none
         working-directory: ./frontend
       - name: Build Flutter web Docker image
-        run: docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/gohome_flutter_web:latest
+        run: docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/gohome_flutter_web:latest .
         working-directory: ./frontend
       - name: Push Flutter web Docker image to GCR
         run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/gohome_flutter_web:latest
