@@ -21,6 +21,6 @@ jobs:
           path: "~/.cache/bazel"
           key: bazel
       - name: Configure Docker / GCR auth
-        run: gcloud auth configure-docker
+        run: gcloud auth configure-docker --quiet
       - name: Build and deploy server image to GCR
         run: bazel run --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //grpc/server:image_push
