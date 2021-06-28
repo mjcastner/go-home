@@ -54,4 +54,4 @@ jobs:
       - name: Extract ESPv2 Docker image tag
         run: echo "espv2_image=`gcloud container images list-tags gcr.io/${{ secrets.GCP_PROJECT_ID }}/endpoints-runtime-serverless --limit 1 | egrep -v DIGEST | cut -f3 -d " "`" >> $GITHUB_ENV
       - name: Deploy Envoy Proxy to Cloud run
-        run: gcloud run deploy gohome-envoy-proxy --image="${{ env.espv2_image }}" --allow-unauthenticated --platform managed --region ${{ secrets.GCP_REGION }}
+        run: gcloud run deploy gohome-envoy-proxy --image="gcr.io/${{ secrets.GCP_PROJECT_ID }}/endpoints-runtime-serverless:${{ env.espv2_image }}" --allow-unauthenticated --platform managed --region ${{ secrets.GCP_REGION }}
