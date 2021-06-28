@@ -24,8 +24,4 @@ jobs:
       - name: Build and push server image to GCR
         run: bazel run --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //grpc/server:image_push
       - name: Deploy newest image to Cloud run
-        run: gcloud run deploy gohome-server --image="gcr.io/${{ secrets.GCP_PROJECT_ID }}/gohome_server:latest" --allow-unauthenticated --platform managed
-  grpc_envoy_proxy:
-    runs-on: ubuntu-latest
-    steps:
-      - run: gcloud config list
+        run: gcloud run deploy gohome-server --image="gcr.io/${{ secrets.GCP_PROJECT_ID }}/gohome_server:latest" --allow-unauthenticated --platform managed --region ${{ secrets.GCP_REGION }}
