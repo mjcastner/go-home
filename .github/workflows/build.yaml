@@ -4,9 +4,18 @@ on:
     branches:
       - main
 jobs:
-  build_grpc_server:
+  build_and_deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
       - uses: actions/checkout@v2
       - uses: bazelbuild/setup-bazelisk@v1
-      - run: bazel run --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //grpc/server:image_push;
+      - name: Build and deploy server image to GCR
+        run: bazel run --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //grpc/server:image_push
+      - name: Use gcloud CLI
+        run: gcloud info
