@@ -4,7 +4,28 @@ on:
     branches:
       - main
 jobs:
-  grpc_server:
+  # grpc_server:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Set up Cloud SDK
+  #       uses: google-github-actions/setup-gcloud@master
+  #       with:
+  #         project_id: ${{ secrets.GCP_PROJECT_ID }}
+  #         service_account_key: ${{ secrets.GCP_SA_KEY }}
+  #         export_default_credentials: true
+  #     - run: gcloud auth configure-docker --quiet
+  #     - uses: actions/checkout@v2
+  #     - uses: bazelbuild/setup-bazelisk@v1
+  #     - name: Mount bazel cache  # Optional
+  #       uses: actions/cache@v2
+  #       with:
+  #         path: "~/.cache/bazel"
+  #         key: bazel
+  #     - name: Build and push server image to GCR
+  #       run: bazel run --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //grpc/server:image_push
+  #     - name: Deploy newest image to Cloud run
+  #       run: gcloud run deploy gohome-server --image="gcr.io/${{ secrets.GCP_PROJECT_ID }}/gohome_server:latest" --allow-unauthenticated --platform managed --region ${{ secrets.GCP_REGION }}
+  grpc_envoy_proxy:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Cloud SDK
@@ -14,14 +35,5 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
       - run: gcloud auth configure-docker --quiet
-      - uses: actions/checkout@v2
-      - uses: bazelbuild/setup-bazelisk@v1
-      - name: Mount bazel cache  # Optional
-        uses: actions/cache@v2
-        with:
-          path: "~/.cache/bazel"
-          key: bazel
-      - name: Build and push server image to GCR
-        run: bazel run --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //grpc/server:image_push
-      - name: Deploy newest image to Cloud run
-        run: gcloud run deploy gohome-server --image="gcr.io/${{ secrets.GCP_PROJECT_ID }}/gohome_server:latest" --allow-unauthenticated --platform managed --region ${{ secrets.GCP_REGION }}
+      - name: Install protobuf compiler
+        run: apt install -y protobuf-compiler
