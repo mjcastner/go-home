@@ -44,7 +44,8 @@ jobs:
         run: gcloud endpoints services deploy protos/server_descriptor.pb espv2/gohome_endpoint.yaml
       - name: Extract endpoint configuration ID
         run: export CONFIG_ID=`gcloud endpoints configs list --service ${{ secrets.ENVOY_ENDPOINT_URL }} --limit 1 | egrep -v CONFIG_ID | cut -f1 -d " "`
-      - run: export PROJECT=${{ secrets.GCP_PROJECT_ID }}
-      - run: export SERVICE=${{ secrets.ENVOY_ENDPOINT_URL }}
       - name: Build ESPv2 Docker image
+        env:
+          PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+          SERVICE: ${{ secrets.ENVOY_ENDPOINT_URL }}
         run: ./espv2/build_image.sh
