@@ -36,4 +36,4 @@ jobs:
           export_default_credentials: true
       - run: gcloud auth configure-docker --quiet
       - name: Install protobuf compiler
-        run: apt-get update -y && apt-get upgrade -y && apt-get install -y protobuf-compiler
+        run: sudo apt-get update -y && sudo apt-get upgrade -y && sudo apt-get install -y protobuf-compiler
