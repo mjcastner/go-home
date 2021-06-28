@@ -15,7 +15,12 @@ jobs:
           export_default_credentials: true
       - uses: actions/checkout@v2
       - uses: bazelbuild/setup-bazelisk@v1
+      - name: Mount bazel cache  # Optional
+        uses: actions/cache@v2
+        with:
+          path: "~/.cache/bazel"
+          key: bazel
+      - name: Configure Docker / GCR auth
+        run: gcloud auth configure-docker
       - name: Build and deploy server image to GCR
         run: bazel run --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //grpc/server:image_push
-      - name: Use gcloud CLI
-        run: gcloud info
