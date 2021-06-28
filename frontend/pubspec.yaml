@@ -1,5 +1,5 @@
 name: go_home
-description: A new Flutter project.
+description: A loving and half-assed recreation of Google's Go link server
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 

@@ -4,7 +4,58 @@ on:
     branches:
       - main
 jobs:
-  grpc_server:
+  # grpc_server:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Set up Cloud SDK
+  #       uses: google-github-actions/setup-gcloud@master
+  #       with:
+  #         project_id: ${{ secrets.GCP_PROJECT_ID }}
+  #         service_account_key: ${{ secrets.GCP_SA_KEY }}
+  #         export_default_credentials: true
+  #     - run: gcloud auth configure-docker --quiet
+  #     - uses: actions/checkout@v2
+  #     - uses: bazelbuild/setup-bazelisk@v1
+  #     - name: Mount bazel cache  # Optional
+  #       uses: actions/cache@v2
+  #       with:
+  #         path: "~/.cache/bazel"
+  #         key: bazel
+  #     - name: Build and push server image to GCR
+  #       run: bazel run --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //grpc/server:image_push
+  #     - name: Deploy newest image to Cloud run
+  #       run: gcloud run deploy gohome-server --image="gcr.io/${{ secrets.GCP_PROJECT_ID }}/gohome_server:latest" --allow-unauthenticated --platform managed --region ${{ secrets.GCP_REGION }}
+  # grpc_envoy_proxy:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Set up Cloud SDK
+  #       uses: google-github-actions/setup-gcloud@master
+  #       with:
+  #         project_id: ${{ secrets.GCP_PROJECT_ID }}
+  #         service_account_key: ${{ secrets.GCP_SA_KEY }}
+  #         export_default_credentials: true
+  #     - run: gcloud auth configure-docker --quiet
+  #     - name: Install protobuf compiler
+  #       run: sudo apt-get update -y && sudo apt-get upgrade -y && sudo apt-get install -y protobuf-compiler
+  #     - uses: actions/checkout@v2
+  #     - name: Generate service descriptor
+  #       run: protoc --include_imports --include_source_info --proto_path=. --descriptor_set_out=protos/server_descriptor.pb protos/server.proto
+  #     - name: Deploy gRPC endpoint configuration
+  #       run: gcloud endpoints services deploy protos/server_descriptor.pb espv2/gohome_endpoint.yaml
+  #     - name: Extract endpoint configuration ID
+  #       run: echo "config_id=`gcloud endpoints configs list --service ${{ secrets.ENVOY_ENDPOINT_URL }} --limit 1 | egrep -v CONFIG_ID | cut -f1 -d " "`" >> $GITHUB_ENV
+  #     - name: Build ESPv2 Docker image
+  #       env:
+  #         CONFIG_ID: ${{ env.config_id }}
+  #         PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+  #         SERVICE: ${{ secrets.ENVOY_ENDPOINT_URL }}
+  #       run: ./espv2/build_image.sh
+  #       continue-on-error: true
+  #     - name: Extract ESPv2 Docker image tag
+  #       run: echo "espv2_image=`gcloud container images list-tags gcr.io/${{ secrets.GCP_PROJECT_ID }}/endpoints-runtime-serverless --limit 1 | egrep -v DIGEST | cut -f3 -d " "`" >> $GITHUB_ENV
+  #     - name: Deploy Envoy Proxy to Cloud run
+  #       run: gcloud run deploy gohome-envoy-proxy --image="gcr.io/${{ secrets.GCP_PROJECT_ID }}/endpoints-runtime-serverless:${{ env.espv2_image }}" --allow-unauthenticated --platform managed --region ${{ secrets.GCP_REGION }}
+  flutter_web_client:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Cloud SDK
@@ -15,43 +66,9 @@ jobs:
           export_default_credentials: true
       - run: gcloud auth configure-docker --quiet
       - uses: actions/checkout@v2
-      - uses: bazelbuild/setup-bazelisk@v1
-      - name: Mount bazel cache  # Optional
-        uses: actions/cache@v2
+      - uses: subosito/flutter-action@v1
         with:
-          path: "~/.cache/bazel"
-          key: bazel
-      - name: Build and push server image to GCR
-        run: bazel run --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //grpc/server:image_push
-      - name: Deploy newest image to Cloud run
-        run: gcloud run deploy gohome-server --image="gcr.io/${{ secrets.GCP_PROJECT_ID }}/gohome_server:latest" --allow-unauthenticated --platform managed --region ${{ secrets.GCP_REGION }}
-  grpc_envoy_proxy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@master
-        with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          export_default_credentials: true
-      - run: gcloud auth configure-docker --quiet
-      - name: Install protobuf compiler
-        run: sudo apt-get update -y && sudo apt-get upgrade -y && sudo apt-get install -y protobuf-compiler
-      - uses: actions/checkout@v2
-      - name: Generate service descriptor
-        run: protoc --include_imports --include_source_info --proto_path=. --descriptor_set_out=protos/server_descriptor.pb protos/server.proto
-      - name: Deploy gRPC endpoint configuration
-        run: gcloud endpoints services deploy protos/server_descriptor.pb espv2/gohome_endpoint.yaml
-      - name: Extract endpoint configuration ID
-        run: echo "config_id=`gcloud endpoints configs list --service ${{ secrets.ENVOY_ENDPOINT_URL }} --limit 1 | egrep -v CONFIG_ID | cut -f1 -d " "`" >> $GITHUB_ENV
-      - name: Build ESPv2 Docker image
-        env:
-          CONFIG_ID: ${{ env.config_id }}
-          PROJECT: ${{ secrets.GCP_PROJECT_ID }}
-          SERVICE: ${{ secrets.ENVOY_ENDPOINT_URL }}
-        run: ./espv2/build_image.sh
-        continue-on-error: true
-      - name: Extract ESPv2 Docker image tag
-        run: echo "espv2_image=`gcloud container images list-tags gcr.io/${{ secrets.GCP_PROJECT_ID }}/endpoints-runtime-serverless --limit 1 | egrep -v DIGEST | cut -f3 -d " "`" >> $GITHUB_ENV
-      - name: Deploy Envoy Proxy to Cloud run
-        run: gcloud run deploy gohome-envoy-proxy --image="gcr.io/${{ secrets.GCP_PROJECT_ID }}/endpoints-runtime-serverless:${{ env.espv2_image }}" --allow-unauthenticated --platform managed --region ${{ secrets.GCP_REGION }}
+          channel: 'stable'
+      - run: cd frontend/
+      - name: Build Flutter web app
+        run: flutter build web --pwa-strategy=none
