@@ -69,6 +69,6 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
-      - run: cd frontend/
       - name: Build Flutter web app
         run: flutter build web --pwa-strategy=none
+        working-directory: ./frontend
