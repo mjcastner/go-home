@@ -6,14 +6,7 @@ import 'package:go_home/utils/grpc.dart';
 import 'package:go_home/protos/link.pb.dart';
 import 'package:go_home/protos/server.pbgrpc.dart';
 
-class CreatePage extends StatefulWidget {
-  @override
-  State<CreatePage> createState() => _CreatePageState();
-}
-
-class _CreatePageState extends State<CreatePage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+class CreatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,36 +17,78 @@ class _CreatePageState extends State<CreatePage> {
         padding: EdgeInsets.all(100),
         child: Column(
           children: [
-            Row(
-              children: [
-                Text("Create a link"),
-              ],
-            ),
-            Row(
-              children: [
-                Container(
-                  height: 50,
-                  width: 250,
-                  color: Colors.grey,
-                ),
-                Container(
-                  padding: EdgeInsets.all(25),
-                  child: Text(
-                    "/",
-                    style: TextStyle(fontSize: 24),
-                  ),
-                ),
-                Container(
-                  height: 50,
-                  width: 250,
-                  color: Colors.grey,
-                ),
-              ],
-            ),
+            GoHomeInput(),
           ],
         ),
       ),
       floatingActionButton: GoHomeFab(),
+    );
+  }
+}
+
+class GoHomeInput extends StatefulWidget {
+  @override
+  _GoHomeInputState createState() => _GoHomeInputState();
+}
+
+class _GoHomeInputState extends State<GoHomeInput> {
+  final _formKey = GlobalKey<FormState>();
+  String? _linkName = '';
+  String? _linkUrl = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          Container(padding: EdgeInsets.all(5)),
+          Row(
+            children: [
+              Column(
+                children: [
+                  Container(
+                    child: TextFormField(
+                      decoration: InputDecoration(labelText: 'Link name'),
+                      onSaved: (value) {
+                        _linkName = value;
+                      },
+                    ),
+                    height: 50,
+                    width: 250,
+                  ),
+                ],
+              ),
+              Padding(padding: EdgeInsets.all(50)),
+              Column(
+                children: [
+                  Container(
+                    child: TextFormField(
+                      decoration: InputDecoration(labelText: 'Target URL'),
+                      onSaved: (value) {
+                        _linkUrl = value;
+                      },
+                    ),
+                    height: 50,
+                    width: 250,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    _formKey.currentState!.save();
+                    print(_linkName);
+                    print(_linkUrl);
+                  },
+                  child: Text("Create")),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

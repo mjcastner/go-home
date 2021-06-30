@@ -29,7 +29,10 @@ class HomePage extends StatelessWidget {
 
     List<DataColumn> homeViewColumns = [
       DataColumn(label: Text("Name")),
-      DataColumn(label: Text("Views")),
+      DataColumn(
+        label: Text("Views"),
+        numeric: true,
+      ),
       DataColumn(label: Text("URL")),
       DataColumn(label: Text("Owner")),
     ];
@@ -38,6 +41,8 @@ class HomePage extends StatelessWidget {
       height: double.infinity,
       width: double.infinity,
       child: DataTable(
+        sortAscending: true,
+        sortColumnIndex: 1,
         columns: homeViewColumns,
         rows: homeViewRows,
         showBottomBorder: true,
