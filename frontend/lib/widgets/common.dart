@@ -37,17 +37,19 @@ class GoHomeDrawer extends StatelessWidget {
                 ListTile(
                   title: Text("My links"),
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomePage()));
+                    Navigator.pushNamed(
+                      context,
+                      '/',
+                    );
                   },
                 ),
                 ListTile(
                   title: Text("Settings"),
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SettingsPage()));
+                    Navigator.pushNamed(
+                      context,
+                      '/settings',
+                    );
                   },
                 ),
               ],
@@ -65,8 +67,10 @@ class GoHomeFab extends StatelessWidget {
     return FloatingActionButton(
       child: Icon(Icons.add),
       onPressed: () => {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => CreatePage()))
+        Navigator.pushNamed(
+          context,
+          '/new',
+        )
       },
     );
   }
