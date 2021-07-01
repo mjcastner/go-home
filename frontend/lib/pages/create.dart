@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_home/widgets/common.dart';
+import 'package:go_home/pages/post_create.dart';
 import 'package:go_home/utils/grpc.dart';
 import 'package:go_home/protos/link.pb.dart';
 import 'package:go_home/protos/server.pbgrpc.dart';
@@ -88,9 +89,12 @@ class _GoHomeInputState extends State<GoHomeInput> {
                   targetUrl: _linkUrl,
                 );
                 var setResponse = goHomeStub.set(linkProto);
-                print(setResponse);
-              } else {
-                print("ERRORZ");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          PostCreatePage(setResponse, linkProto)),
+                );
               }
             },
             child: Text("Create"),

@@ -1,10 +1,6 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:go_home/pages/create.dart';
-import 'package:go_home/pages/home.dart';
-import 'package:go_home/pages/settings.dart';
 
 class GoHomeDrawer extends StatelessWidget {
   @override
@@ -21,7 +17,7 @@ class GoHomeDrawer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "Header",
+                  "GoHome",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
