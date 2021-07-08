@@ -4,11 +4,6 @@ gRPC backend and a Dart / Flutter gRPC web frontend.  Not at all ready for
 production deployments.
 
 ## Work in progress
-You can see a snapshot of server functionality
-[here](https://gohome-flutter-web-b5p44absla-uw.a.run.app/).
-
-Feature list:
-
 * Golang backend
   * ~~gRPC server~~
   * ~~gRPC test client~~
