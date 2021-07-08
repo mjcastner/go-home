@@ -64,7 +64,7 @@ jobs:
       - name: Generate Dart protos
         run: protoc --dart_out=grpc:frontend/lib/ protos/*.proto
       - name: Build Flutter web app
-        run: flutter build web --pwa-strategy=none --dart-define GOHOME_HOST=${{ secrets.GRPC_SERVER }}
+        run: flutter build web --pwa-strategy=none --dart-define GOHOME_HOST=${{ secrets.ENVOY_ENDPOINT_URL }}
         working-directory: ./frontend
       - name: Build Flutter web Docker image
         run: docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/gohome_flutter_web:latest .
