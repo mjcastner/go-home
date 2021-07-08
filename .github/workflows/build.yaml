@@ -35,6 +35,7 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
       - run: gcloud auth configure-docker --quiet
+      - uses: actions/checkout@v2
       - name: Build Envoy Proxy image
         run: docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/gohome_envoy_proxy:latest .
         working-directory: ./envoy
