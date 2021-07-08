@@ -24,7 +24,9 @@ Feature list:
   * ~~Initial URL validation~~
   * Better HTTP validation / handling
   * OAuth flow for Google sign-in
-  * Docker hostname configuration / DNS A Record setup
+  * Docker hostname configuration / DNS Record setup
 * CI/CD
   * ~~GitHub Actions workflow~~
   * Testing integration
+  * ~~Replace ESPv2 deployment script with standard Envoy config~~
+  * See if we can use environmental vars in envoy YAML for easy deployment
