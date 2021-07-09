@@ -55,7 +55,7 @@ class _GoHomeInputState extends State<GoHomeInput> {
                 }
               },
               onSaved: (value) {
-                _linkName = value.toString();
+                this._linkName = value.toString();
               },
             ),
             height: 75,
@@ -74,7 +74,12 @@ class _GoHomeInputState extends State<GoHomeInput> {
                 }
               },
               onSaved: (value) {
-                _linkUrl = value.toString();
+                RegExp httpPrefixRegex = new RegExp(r"^http");
+                if (httpPrefixRegex.hasMatch(value.toString())) {
+                  this._linkUrl = value.toString();
+                } else {
+                  this._linkUrl = 'http://${value.toString()}';
+                }
               },
             ),
             height: 75,
@@ -85,8 +90,8 @@ class _GoHomeInputState extends State<GoHomeInput> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 Link linkProto = Link(
-                  name: _linkName,
-                  targetUrl: _linkUrl,
+                  name: this._linkName,
+                  targetUrl: this._linkUrl,
                 );
                 var setResponse = goHomeStub.set(linkProto);
                 Navigator.push(

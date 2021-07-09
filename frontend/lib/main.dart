@@ -17,7 +17,7 @@ class GoHome extends StatelessWidget {
         '/new': (context) => CreatePage(),
         '/settings': (context) => SettingsPage(),
       },
-      title: 'GoHome, a go link server for use...at home.',
+      title: 'GoHome',
     );
   }
 }
