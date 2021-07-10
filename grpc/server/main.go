@@ -145,6 +145,11 @@ func main() {
 		dbHostFlag = &dbHostEnvVar
 	}
 
+	dbPasswordEnvVar := os.Getenv("GOHOME_DB_PASSWORD")
+	if *dbPasswordFlag == "" && dbPasswordEnvVar != "" {
+		dbPasswordFlag = &dbPasswordEnvVar
+	}
+
 	// Init DB connection
 	ctx := context.Background()
 	var dbDriver string
