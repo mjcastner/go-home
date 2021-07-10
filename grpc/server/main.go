@@ -138,6 +138,7 @@ func main() {
 	dbPasswordFlag := flag.String("password", "", "Password for DB access.")
 	flag.Parse()
 
+	// dbURI = fmt.Sprintf("%s:%s@unix(/%s/%s)/%s?parseTime=true", dbUser, dbPwd, socketDir, instanceConnectionName, dbName)
 	// Look for Cloud SQL instance connection variable
 	dbHostEnvVar := os.Getenv("GOHOME_DB_HOST")
 	if *dbHostFlag == "" && dbHostEnvVar != "" {

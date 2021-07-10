@@ -17,10 +17,6 @@ class PostCreatePage extends StatelessWidget {
     this._link = link;
   }
 
-  void _launchURL() async => await canLaunch(this._link!.targetUrl)
-      ? await launch(this._link!.targetUrl)
-      : throw 'Could not launch ${this._link!.targetUrl}';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
