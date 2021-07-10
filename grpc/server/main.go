@@ -138,6 +138,13 @@ func main() {
 	dbPasswordFlag := flag.String("password", "", "Password for DB access.")
 	flag.Parse()
 
+	// Look for Cloud SQL instance connection variable
+	dbHostEnvVar := os.Getenv("GOHOME_DB_HOST")
+	if *dbHostFlag == "" && dbHostEnvVar != "" {
+		log.Printf("Found Cloud SQL instance name: %s", dbHostEnvVar)
+		dbHostFlag = &dbHostEnvVar
+	}
+
 	// Init DB connection
 	ctx := context.Background()
 	var dbDriver string

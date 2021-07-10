@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:go_home/protos/link.pb.dart';
 import 'package:go_home/protos/server.pb.dart';
@@ -22,8 +24,12 @@ class PostCreatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: GoHomeDrawer(),
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () => {Navigator.pushNamed(context, '/')},
+        ),
+      ),
       floatingActionButton: GoHomeFab(),
       body: FutureBuilder(
         future: this._setResponse,
