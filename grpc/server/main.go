@@ -228,7 +228,11 @@ func main() {
 	dbSocketFlag := flag.Bool(
 		"use_socket",
 		false,
-		"Whether or not to use UNIX sockets for DB connections.")
+		"Use UNIX sockets for DB connections.")
+	envCredFlag := flag.Bool(
+		"use_env_credentials",
+		false,
+		"Get credentials from environment variables (GOHOME_PASSWORD).")
 	flag.Parse()
 
 	// Init connection
@@ -241,6 +245,10 @@ func main() {
 		socket_dir: *dbSocketDirFlag,
 		user:       *dbUserFlag,
 		password:   *dbPasswordFlag,
+	}
+
+	if *envCredFlag {
+		connection.password = os.Getenv("GOHOME_PASSWORD")
 	}
 
 	// Perform initial setup, if necessary
