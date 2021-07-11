@@ -1,12 +1,18 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_binary")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 load("@io_bazel_rules_docker//go:image.bzl", "go_image")
 
-# gazelle:exclude main.go
 go_binary(
     name = "main",
-    srcs = ["main.go"],
+    embed = [":server_lib"],
     visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "server_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/mjcastner/go-home/grpc/server",
+    visibility = ["//visibility:private"],
     deps = [
         "//protos:link_proto_go",
         "//protos:server_proto_go",
@@ -18,7 +24,7 @@ go_binary(
 
 go_image(
     name = "image",
-    embed = [":main"],
+    embed = [":server_lib"],
 )
 
 container_push(
