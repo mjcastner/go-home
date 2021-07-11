@@ -32,9 +32,9 @@ class _HomePageState extends State<HomePage> {
             Text(link.targetUrl),
             onTap: () {
               launch(link.targetUrl);
+              setState(() {});
               link.views += 1;
               goHomeStub.set(link);
-              setState(() {});
             },
           ),
           DataCell(Icon(Icons.videogame_asset)),

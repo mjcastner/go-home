@@ -79,7 +79,8 @@ func (s *server) Set(ctx context.Context, in *link_proto.Link) (*server_proto.Se
 			 links (name, target_url, views)
 		 VALUES ($1, $2, $3)
 		 ON CONFLICT (name)
-		 DO UPDATE SET target_url = $2;`,
+		 DO UPDATE 
+			 SET target_url = $2, views = $3;`,
 		in.Name,
 		in.TargetUrl,
 		in.Views,
