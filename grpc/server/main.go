@@ -66,7 +66,7 @@ func initConn(connection connection, safeConn bool) {
 		}
 		if connection.socket {
 			dbUri = fmt.Sprintf(
-				"%s:%s@unix(/%s/%s/.s.PGSQL.5432)/?parseTime=true",
+				"%s:%s@unix(/%s/%s)/?parseTime=true",
 				connection.user,
 				connection.password,
 				connection.socket_dir,
@@ -87,7 +87,7 @@ func initConn(connection connection, safeConn bool) {
 		}
 		if connection.socket {
 			dbUri = fmt.Sprintf(
-				"%s:%s@unix(/%s/%s/.s.PGSQL.5432)/%s?parseTime=true",
+				"%s:%s@unix(/%s/%s)/%s?parseTime=true",
 				connection.user,
 				connection.password,
 				connection.socket_dir,
@@ -95,6 +95,8 @@ func initConn(connection connection, safeConn bool) {
 				connection.name)
 		}
 	}
+
+	log.Printf("Connecting via DB URI: %s...", dbUri)
 	db, err := sql.Open(connection.driver, dbUri)
 	if err != nil {
 		log.Fatal(err)
