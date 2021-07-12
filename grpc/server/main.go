@@ -48,7 +48,7 @@ func getDriver(dbType string) string {
 	return driver
 }
 
-func initConn(connection connection, safeConn bool) {
+func assembleUri(connection connection, safeConn bool) string {
 	log.Println("Initializing connection to database...")
 	var dbUri string
 
@@ -95,12 +95,7 @@ func initConn(connection connection, safeConn bool) {
 				connection.name)
 		}
 	}
-	log.Println(dbUri)
-	db, err := sql.Open(connection.driver, dbUri)
-	if err != nil {
-		log.Fatal(err)
-	}
-	DB = db
+	return dbUri
 }
 
 func initDb(ctx context.Context, dbName string) bool {
@@ -253,12 +248,23 @@ func main() {
 
 	// Perform initial setup, if necessary
 	ctx := context.Background()
-	initConn(connection, true)
+	dbUri := assembleUri(connection, true)
+	db, err := sql.Open(connection.driver, dbUri)
+	if err != nil {
+		log.Fatal(err)
+	}
+	DB = db
 	initDb(ctx, connection.name)
 	initTable()
 
 	// Establish DB connection
-	initConn(connection, false)
+	dbUri = assembleUri(connection, false)
+	db, err = sql.Open(connection.driver, dbUri)
+	if err != nil {
+		log.Fatal(err)
+	}
+	DB = db
+	defer db.Close()
 	defer DB.Close()
 
 	// Set server port
