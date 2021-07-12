@@ -66,7 +66,7 @@ func initConn(connection connection, safeConn bool) {
 		}
 		if connection.socket {
 			dbUri = fmt.Sprintf(
-				"%s:%s@unix(/%s/%s)/?parseTime=true",
+				"user=%s password=%s host=%s/%s",
 				connection.user,
 				connection.password,
 				connection.socket_dir,
@@ -87,12 +87,12 @@ func initConn(connection connection, safeConn bool) {
 		}
 		if connection.socket {
 			dbUri = fmt.Sprintf(
-				"%s:%s@unix(/%s/%s)/%s?parseTime=true",
+				"user=%s password=%s database=%s host=%s/%s",
 				connection.user,
 				connection.password,
+				connection.name,
 				connection.socket_dir,
-				connection.host,
-				connection.name)
+				connection.host)
 		}
 	}
 
