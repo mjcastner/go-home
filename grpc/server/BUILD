@@ -16,7 +16,7 @@ go_library(
     deps = [
         "//protos:link_proto_go",
         "//protos:server_proto_go",
-        "@com_github_jackc_pgx//stdlib:go_default_library",
+        "@com_github_jackc_pgx//stdlib",
         "@org_golang_google_grpc//:go_default_library",
         "@org_modernc_sqlite//:sqlite",
     ],
