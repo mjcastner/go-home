@@ -66,7 +66,7 @@ func initConn(connection connection, safeConn bool) {
 		}
 		if connection.socket {
 			dbUri = fmt.Sprintf(
-				"%s:%s@unix(/%s/%s)/?parseTime=true",
+				"%s:%s@unix(/%s/%s/.s.PGSQL.5432)/?parseTime=true",
 				connection.user,
 				connection.password,
 				connection.socket_dir,
@@ -87,7 +87,7 @@ func initConn(connection connection, safeConn bool) {
 		}
 		if connection.socket {
 			dbUri = fmt.Sprintf(
-				"%s:%s@unix(/%s/%s)/%s?parseTime=true",
+				"%s:%s@unix(/%s/%s/.s.PGSQL.5432)/%s?parseTime=true",
 				connection.user,
 				connection.password,
 				connection.socket_dir,
@@ -99,7 +99,6 @@ func initConn(connection connection, safeConn bool) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
 	DB = db
 }
 
