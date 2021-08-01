@@ -8,6 +8,12 @@ import 'package:go_home/protos/server.pbgrpc.dart';
 GoHomeClient goHomeStub = initGoHomeClient();
 
 class CreatePage extends StatelessWidget {
+  String linkName = "";
+
+  CreatePage(String linkName) {
+    this.linkName = linkName;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +23,7 @@ class CreatePage extends StatelessWidget {
         padding: EdgeInsets.all(100),
         child: Column(
           children: [
-            GoHomeInput(),
+            GoHomeInput(this.linkName),
           ],
         ),
       ),
@@ -26,14 +32,24 @@ class CreatePage extends StatelessWidget {
 }
 
 class GoHomeInput extends StatefulWidget {
+  String linkName = "";
+
+  GoHomeInput(String linkName) {
+    this.linkName = linkName;
+  }
+
   @override
-  _GoHomeInputState createState() => _GoHomeInputState();
+  _GoHomeInputState createState() => _GoHomeInputState(this.linkName);
 }
 
 class _GoHomeInputState extends State<GoHomeInput> {
   final _formKey = GlobalKey<FormState>();
-  String _linkName = '';
-  String _linkUrl = '';
+  String linkName = "";
+  String linkUrl = "";
+
+  _GoHomeInputState(String linkName) {
+    this.linkName = linkName;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +61,8 @@ class _GoHomeInputState extends State<GoHomeInput> {
           Container(
             child: TextFormField(
               decoration: InputDecoration(labelText: 'Link name'),
+              initialValue: this.linkName,
+              // initialValue: this.linkName,
               validator: (value) {
                 RegExp linkNameRegex = new RegExp(r"^[A-Za-z0-9]{1,50}$");
                 if (linkNameRegex.hasMatch(value.toString())) {
@@ -54,7 +72,7 @@ class _GoHomeInputState extends State<GoHomeInput> {
                 }
               },
               onSaved: (value) {
-                this._linkName = value.toString();
+                this.linkName = value.toString();
               },
             ),
             height: 75,
@@ -75,9 +93,9 @@ class _GoHomeInputState extends State<GoHomeInput> {
               onSaved: (value) {
                 RegExp httpPrefixRegex = new RegExp(r"^http");
                 if (httpPrefixRegex.hasMatch(value.toString())) {
-                  this._linkUrl = value.toString();
+                  this.linkUrl = value.toString();
                 } else {
-                  this._linkUrl = 'http://${value.toString()}';
+                  this.linkUrl = 'http://${value.toString()}';
                 }
               },
             ),
@@ -89,8 +107,8 @@ class _GoHomeInputState extends State<GoHomeInput> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 Link linkProto = Link(
-                  name: this._linkName,
-                  targetUrl: this._linkUrl,
+                  name: this.linkName,
+                  targetUrl: this.linkUrl,
                 );
                 var setResponse = goHomeStub.set(linkProto);
                 Navigator.push(

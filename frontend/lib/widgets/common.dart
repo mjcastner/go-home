@@ -65,7 +65,7 @@ class GoHomeFab extends StatelessWidget {
       onPressed: () => {
         Navigator.pushNamed(
           context,
-          '/new',
+          '/create/',
         )
       },
     );

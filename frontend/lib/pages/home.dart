@@ -37,7 +37,18 @@ class _HomePageState extends State<HomePage> {
               goHomeStub.set(link);
             },
           ),
-          DataCell(Icon(Icons.videogame_asset)),
+          DataCell(
+            CircleAvatar(
+              radius: 13,
+              backgroundImage: AssetImage("images/profile.jpeg"),
+            ),
+          ),
+          DataCell(Row(
+            children: [
+              Icon(Icons.edit),
+              Icon(Icons.delete),
+            ],
+          )),
         ],
       );
       homeViewRows.add(row);
@@ -77,6 +88,7 @@ class _HomePageState extends State<HomePage> {
       ),
       DataColumn(label: Text("URL")),
       DataColumn(label: Text("Owner")),
+      DataColumn(label: Text("Actions")),
     ];
 
     return Container(
