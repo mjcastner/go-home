@@ -45,7 +45,8 @@ class _HomePageState extends State<HomePage> {
           DataCell(Row(
             children: [
               IconButton(
-                onPressed: () => {print("Edit")},
+                onPressed: () =>
+                    {Navigator.pushNamed(context, 'create/${link.name}')},
                 icon: Icon(Icons.edit),
               ),
               IconButton(
