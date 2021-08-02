@@ -3,6 +3,9 @@ A loving and half-assed recreation of Google's Go link server.  Uses a Golang /
 gRPC backend and a Dart / Flutter gRPC web frontend.  Not at all ready for
 production deployments.
 
+## Demo
+![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+
 ## Work in progress
 * Golang backend
   * ~~gRPC server~~
