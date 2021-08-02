@@ -1,11 +1,8 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:go_home/protos/link.pb.dart';
 import 'package:go_home/protos/server.pb.dart';
-import 'package:go_home/widgets/common.dart';
 import 'package:go_home/protos/server.pbgrpc.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:go_home/widgets/common.dart';
 import 'package:url_launcher/link.dart' as url_launcher_link;
 
 class PostCreatePage extends StatelessWidget {
@@ -31,7 +28,7 @@ class PostCreatePage extends StatelessWidget {
         future: this._setResponse,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
-            SetResponse response = snapshot.data as SetResponse;
+            LinkResponse response = snapshot.data as LinkResponse;
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
