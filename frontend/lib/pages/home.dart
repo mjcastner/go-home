@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_home/widgets/common.dart';
-import 'package:go_home/utils/grpc.dart';
 import 'package:go_home/protos/server.pbgrpc.dart';
+import 'package:go_home/utils/grpc.dart';
+import 'package:go_home/widgets/common.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/link.dart' as url_launcher_link;
 
 GoHomeClient goHomeStub = initGoHomeClient();
 
@@ -45,8 +44,19 @@ class _HomePageState extends State<HomePage> {
           ),
           DataCell(Row(
             children: [
-              Icon(Icons.edit),
-              Icon(Icons.delete),
+              IconButton(
+                onPressed: () => {print("Edit")},
+                icon: Icon(Icons.edit),
+              ),
+              IconButton(
+                onPressed: () => {
+                  links.removeWhere((element) => element.name == link.name),
+                  goHomeStub
+                      .delete(LinkRequest(name: link.name))
+                      .whenComplete(() => setState(() {}))
+                },
+                icon: Icon(Icons.delete),
+              ),
             ],
           )),
         ],
