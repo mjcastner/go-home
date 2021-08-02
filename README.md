@@ -4,7 +4,7 @@ gRPC backend and a Dart / Flutter gRPC web frontend.  Not at all ready for
 production deployments.
 
 ## Demo
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+![Image of Yaktocat](https://github.com/mjcastner/go-home/raw/main/docs/images/gohome_demo.gif)
 
 ## Work in progress
 * Golang backend
