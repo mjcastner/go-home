@@ -52,6 +52,7 @@ func initConn(connection connection, safeConn bool) {
 	log.Println("Initializing connection to database...")
 	var dbUri string
 
+	// TODO(mjcastner): Cleanup logic, sqlite only needs non-safe connection.
 	if safeConn {
 		switch connection.driver {
 		case "sqlite":
@@ -75,7 +76,7 @@ func initConn(connection connection, safeConn bool) {
 	} else {
 		switch connection.driver {
 		case "sqlite":
-			dbUri = fmt.Sprintf("/tmp/%s.db%s", connection.name, connection.name)
+			dbUri = fmt.Sprintf("/tmp/%s.db", connection.name)
 		case "pgx":
 			dbUri = fmt.Sprintf(
 				"postgres://%s:%s@%s:%s/%s",
@@ -123,16 +124,14 @@ func initDb(ctx context.Context, dbName string) bool {
 }
 
 func initTable() {
-	initStmt := `
-		CREATE TABLE IF NOT EXISTS links (
+	_, err := DB.Exec(
+		`CREATE TABLE IF NOT EXISTS links (
 			name VARCHAR ( 50 ) PRIMARY KEY,
 			target_url VARCHAR ( 255 ),
 			views BIGINT
-		);
-	`
-	_, err := DB.Exec(initStmt)
+		);`)
 	if err != nil {
-		log.Printf("%q: %s\n", err, initStmt)
+		log.Println(err)
 	}
 }
 
@@ -145,6 +144,7 @@ func (s *server) BatchGet(ctx context.Context, in *server_proto.LinkRequestBatch
 		views      int64
 	)
 
+	// TODO(mjcastner): Implement IN clause to get actual link batch name values
 	links := &server_proto.LinkBatch{}
 	rows, err := DB.Query("SELECT name, target_url, views FROM links LIMIT 500;")
 	if err != nil {
@@ -162,6 +162,44 @@ func (s *server) BatchGet(ctx context.Context, in *server_proto.LinkRequestBatch
 	}
 
 	return links, nil
+}
+
+func (s *server) BatchSet(ctx context.Context, in *server_proto.LinkBatch) (*server_proto.LinkResponse, error) {
+	log.Printf("Received Batch Set request: %s", in)
+	response := &server_proto.LinkResponse{}
+
+	tx, err := DB.BeginTx(ctx, nil)
+	if err != nil {
+		log.Println(err)
+		response.Code = 1
+	}
+
+	for i := range in.Links {
+		_, err = tx.ExecContext(
+			ctx,
+			`INSERT INTO
+				links (name, target_url, views)
+			VALUES ($1, $2, $3)
+			ON CONFLICT (name)
+			DO UPDATE SET target_url = $2, views = $3;`,
+			in.Links[i].Name,
+			in.Links[i].TargetUrl,
+			in.Links[i].Views,
+		)
+		if err != nil {
+			tx.Rollback()
+			response.Code = 1
+			return response, err
+		}
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		log.Println(err)
+		response.Code = 1
+	}
+
+	return response, nil
 }
 
 // Standard methods
@@ -188,7 +226,7 @@ func (s *server) Get(ctx context.Context, in *server_proto.LinkRequest) (*link_p
 	return link, nil
 }
 
-func (s *server) Set(ctx context.Context, in *link_proto.Link) (*server_proto.SetResponse, error) {
+func (s *server) Set(ctx context.Context, in *link_proto.Link) (*server_proto.LinkResponse, error) {
 	log.Printf("Received Set request for key %s: %s", in.Name, in.TargetUrl)
 
 	_, err := DB.Exec(
@@ -203,16 +241,31 @@ func (s *server) Set(ctx context.Context, in *link_proto.Link) (*server_proto.Se
 	)
 	if err != nil {
 		log.Println(err)
-		response := &server_proto.SetResponse{
+		response := &server_proto.LinkResponse{
 			Code: 1,
 		}
 		return response, err
 	} else {
-		response := &server_proto.SetResponse{
+		response := &server_proto.LinkResponse{
 			Code: 0,
 		}
 		return response, nil
 	}
+}
+
+func (s *server) Delete(ctx context.Context, in *server_proto.LinkRequest) (*server_proto.LinkResponse, error) {
+	log.Printf("Received Delete request for key: %s", in.Name)
+	response := &server_proto.LinkResponse{
+		Code: 0,
+	}
+
+	_, err := DB.Exec(`DELETE FROM links WHERE name = $1;`, in.Name)
+	if err != nil {
+		log.Println(err)
+		response.Code = 1
+	}
+
+	return response, nil
 }
 
 func main() {
@@ -255,11 +308,12 @@ func main() {
 	// Perform initial setup, if necessary
 	ctx := context.Background()
 	initConn(connection, true)
-	initDb(ctx, connection.name)
+	if connection.driver != "sqlite" {
+		initDb(ctx, connection.name)
+		initConn(connection, false)
+	}
 	initTable()
 
-	// Establish DB connection
-	initConn(connection, false)
 	defer DB.Close()
 
 	// Set server port

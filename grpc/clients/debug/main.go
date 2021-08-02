@@ -41,10 +41,10 @@ func main() {
 	c := server_proto.NewGoHomeClient(conn)
 
 	// Assemble example links
-	names := []string{"trololo", "blackspine", "bananaphone"}
-	urls := []string{"https://www.youtube.com/watch?v=sTSA_sWGM44", "https://www.youtube.com/watch?v=_igaLv7ro8o", "https://www.youtube.com/watch?v=UqWwsUhrFBw"}
-	views := []int64{500, 250, 1}
-	links := make([]link_proto.Link, 3)
+	names := []string{"facebook", "apple", "amazon", "netflix", "google"}
+	urls := []string{"facebook.com", "apple.com", "amazon.com", "netflix.com", "google.com"}
+	views := []int64{500, 400, 300, 200, 100}
+	links := make([]link_proto.Link, 5)
 	for i := range links {
 		links[i].Name = names[i]
 		links[i].TargetUrl = urls[i]
@@ -62,6 +62,24 @@ func main() {
 	}
 
 	// Batch set
+	ms := &link_proto.Link{
+		Name: "microsoft",
+		TargetUrl: "microsoft.com",
+		Views: 0,
+	}
+	links = append(links, *ms)
+	linkBatch := &server_proto.LinkBatch{}
+
+	for i := range links {
+		linkBatch.Links = append(linkBatch.Links, &links[i])
+	}
+	log.Println(linkBatch)
+	_, err = c.BatchSet(ctx, linkBatch)
+	if err != nil {
+		log.Fatalf("Set failed:", err)
+	} else {
+		log.Print("Successfully set batch of links")
+	}
 
 	// Get
 	for i := range names {
@@ -76,6 +94,15 @@ func main() {
 		}
 	}
 
+	// Delete
+	deleteRequest := &server_proto.LinkRequest{
+		Name: "microsoft",
+	}
+	_, err = c.Delete(ctx, deleteRequest)
+	if err != nil {
+		log.Println(err)
+	}
+
 	// Batch get
 	batchGetRequest := &server_proto.LinkRequestBatch{}
 	for i := range names {
@@ -88,4 +115,5 @@ func main() {
 		log.Println("Successfully retrieved link batch!")
 	}
 	log.Println(batch)
+
 }

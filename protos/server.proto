@@ -16,7 +16,7 @@ message LinkRequestBatch {
   repeated string names = 1;
 }
 
-message SetResponse {
+message LinkResponse {
   enum ResponseCode {
     SUCCESS = 0;
     FAILED = 1;
@@ -27,7 +27,8 @@ message SetResponse {
 
 service GoHome {
   rpc BatchGet (LinkRequestBatch) returns (LinkBatch) {}
-  rpc BatchSet (LinkBatch) returns (SetResponse) {}
+  rpc BatchSet (LinkBatch) returns (LinkResponse) {}
   rpc Get (LinkRequest) returns (Link) {}
-  rpc Set (Link) returns (SetResponse) {}
+  rpc Set (Link) returns (LinkResponse) {}
+  rpc Delete (LinkRequest) returns (LinkResponse) {}
 }
