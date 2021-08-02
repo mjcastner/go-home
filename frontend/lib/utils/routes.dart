@@ -24,6 +24,8 @@ var linkHandler = Handler(
         Navigator.pushNamed(context!, "/create/${linkName}");
       }
     });
+  } else {
+    Navigator.pushNamed(context!, "/");
   }
 });
 

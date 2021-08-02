@@ -42,7 +42,13 @@ func main() {
 
 	// Assemble example links
 	names := []string{"facebook", "apple", "amazon", "netflix", "google"}
-	urls := []string{"facebook.com", "apple.com", "amazon.com", "netflix.com", "google.com"}
+	urls := []string{
+		"http://www.facebook.com",
+		"http://www.apple.com",
+		"http://www.amazon.com",
+		"http://www.netflix.com",
+		"http://www.google.com",
+	}
 	views := []int64{500, 400, 300, 200, 100}
 	links := make([]link_proto.Link, 5)
 	for i := range links {
@@ -64,7 +70,7 @@ func main() {
 	// Batch set
 	ms := &link_proto.Link{
 		Name: "microsoft",
-		TargetUrl: "microsoft.com",
+		TargetUrl: "http://www.microsoft.com",
 		Views: 0,
 	}
 	links = append(links, *ms)
@@ -101,6 +107,8 @@ func main() {
 	_, err = c.Delete(ctx, deleteRequest)
 	if err != nil {
 		log.Println(err)
+	} else {
+		log.Printf("Successfully deleted link %s", deleteRequest.Name)
 	}
 
 	// Batch get
